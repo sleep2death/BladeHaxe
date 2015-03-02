@@ -11,7 +11,7 @@ import openfl.Vector;
 
 import hommer.library.assets.*;
 
-class PlayerSubMeshParser extends ParserBase {
+class PlayerSubGeometryParser extends ParserBase {
     private static inline var BLM_VERTEX:Int = 0x0800;
     private static inline var BLM_INDEX:Int = 0x0900;
 
@@ -27,10 +27,10 @@ class PlayerSubMeshParser extends ParserBase {
 
     private var _name : String;
 
-    public var asset(get, null) : PlayerSubMeshAsset;
-    private var _asset : PlayerSubMeshAsset;
+    public var asset(get, null) : PlayerSubGeometryAsset;
+    private var _asset : PlayerSubGeometryAsset;
 
-    public function get_asset() : PlayerSubMeshAsset
+    public function get_asset() : PlayerSubGeometryAsset
     {
         return _asset;
     }
@@ -40,7 +40,7 @@ class PlayerSubMeshParser extends ParserBase {
             _name = name;
         }
 
-        _asset = new PlayerSubMeshAsset(_name);
+        _asset = new PlayerSubGeometryAsset(_name);
 
         super(ParserDataFormat.BINARY);
     }

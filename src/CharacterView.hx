@@ -15,6 +15,7 @@ import away3d.materials.*;
 
 import hommer.library.*;
 import hommer.core.geometries.*;
+import hommer.entities.*;
 
 class CharacterView extends ViewerBase {
     public function new()
@@ -29,7 +30,7 @@ class CharacterView extends ViewerBase {
         player = new PlayerGeometry();
         player.getSubMeshGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "thigh_0"]);
 
-        var mesh : Mesh = new Mesh(player, new ColorMaterial(0xFF9900));
+        var mesh : PlayerBase = new PlayerBase(player, new ColorMaterial(0xFF9900));
         _view.scene.addChild(mesh);
         //var libPlayer : PlayerLibrary = PlayerLibrary.getInstance();
         //var pma : PlayerSubMeshAsset = libPlayer.getSubMesh("arm_0");
@@ -50,7 +51,7 @@ class CharacterView extends ViewerBase {
     private override function _onEnterFrame(e:Event):Void
     {
         _view.render();
-        if(_count == 300) {
+        if(_count == 150) {
             player.getSubMeshGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "skirt_1"]);
         }
         _count++;

@@ -7,8 +7,9 @@ import openfl.Vector;
 import openfl.events.Event;
 
 import hommer.library.PlayerLibrary;
-import hommer.library.assets.PlayerSubMeshAsset;
+import hommer.library.assets.PlayerSubGeometryAsset;
 import hommer.events.PlayerEvent;
+import hommer.utils.FileExtension;
 
 class PlayerGeometry extends Geometry {
 
@@ -17,7 +18,6 @@ class PlayerGeometry extends Geometry {
 
     public function new() {
         super();
-        addSubGeometry(unitedGeometry);
     }
 
 
@@ -25,7 +25,7 @@ class PlayerGeometry extends Geometry {
     private var _numSubGeo : UInt;
     private var _indicesOffset : UInt;
 
-    private var preparingAssets : Vector<PlayerSubMeshAsset> = new Vector<PlayerSubMeshAsset>();
+    private var preparingAssets : Vector<PlayerSubGeometryAsset> = new Vector<PlayerSubGeometryAsset>();
 
     public var isPreparing(get, null) : Bool;
 
@@ -44,7 +44,7 @@ class PlayerGeometry extends Geometry {
         _unitedBoneIndices = new Vector<UInt>();
 
         while(preparingAssets.length > 0){
-            preparingAssets.pop().removeEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubMeshLoaded);
+            preparingAssets.pop().removeEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubAssetLoaded);
         }
     }
 
@@ -54,23 +54,23 @@ class PlayerGeometry extends Geometry {
         _numSubGeo = subNames.length;
 
         for(name in subNames) {
-            var pma : PlayerSubMeshAsset = PlayerLibrary.getInstance().getSubMesh(name);
+            var pma : PlayerSubGeometryAsset = PlayerLibrary.getInstance().getSubGeometry(prefixMeshURL(name));
             //if sub mesh need to be loaded:
             if(pma.isEmpty) {
-                pma.addEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubMeshLoaded);
+                pma.addEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubAssetLoaded);
                 preparingAssets.push(pma);
             }else{
                 //already got this:
-                onSubMeshReady(pma);
+                onSubAssetReady(pma);
             }
         }
     }
 
-    private function onSubMeshLoaded(evt : LoaderEvent) : Void
+    private function onSubAssetLoaded(evt : LoaderEvent) : Void
     {
-        evt.target.removeEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubMeshLoaded);
-        var pma : PlayerSubMeshAsset = cast(evt.target, PlayerSubMeshAsset);
-        onSubMeshReady(pma);
+        evt.target.removeEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubAssetLoaded);
+        var pma : PlayerSubGeometryAsset = cast(evt.target, PlayerSubGeometryAsset);
+        onSubAssetReady(pma);
     }
     //TODO: PARSE ERROR HANDLER NEEDED!
 
@@ -80,7 +80,7 @@ class PlayerGeometry extends Geometry {
     private var _unitedBoneWeights : Vector<Float>;
     private var _unitedBoneIndices : Vector<UInt>;
 
-    private function onSubMeshReady(pma : PlayerSubMeshAsset) : Void
+    private function onSubAssetReady(pma : PlayerSubGeometryAsset) : Void
     {
         _unitedVertices = _unitedVertices.concat(pma.vertices);
         _unitedUvs = _unitedUvs.concat(pma.uvs);
@@ -101,6 +101,9 @@ class PlayerGeometry extends Geometry {
         }
     }
 
+    //if already added to the geometry.
+    private var unitedGeometryAdded : Bool;
+
     private function assemble() : Void {
         unitedGeometry.fromVectors(_unitedVertices, _unitedUvs, null, null);
         unitedGeometry.updateIndexData(_unitedIndices);
@@ -109,6 +112,19 @@ class PlayerGeometry extends Geometry {
         unitedGeometry.updateJointIndexData(_unitedBoneIndices);
 
         dispatchEvent(new PlayerEvent(PlayerEvent.GEO_ASSEMBLE_COMPLETE));
+
+        if(!unitedGeometryAdded)
+        {
+            addSubGeometry(unitedGeometry);
+            unitedGeometryAdded = true;
+        }
+    }
+
+    //TODO: For test only.
+    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/";
+
+    private static function prefixMeshURL(id : String) : String {
+        return  PLAYER_MESH_URL + id + FileExtension.MESH;
     }
 
 }

@@ -10,24 +10,25 @@ import openfl.Vector;
 
 import hommer.loaders.parsers.*;
 import hommer.library.assets.*;
-import hommer.utils.FileExtension;
+
 
 class PlayerLibrary {
 
-    private var meshBundle : Asset3DLibraryBundle;
+    private var geometryBundle : Asset3DLibraryBundle;
     private var animBundle : Asset3DLibraryBundle;
 
     private function new() {
-        meshBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_MESH);
+        geometryBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_GEOMETRY);
         animBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_ANIM);
     }
 
-    public function getSubMesh(id : String, autoLoad:Bool = true) : PlayerSubMeshAsset {
-        var pma : PlayerSubMeshAsset = cast(meshBundle.getAsset(id), PlayerSubMeshAsset);
+    //get submesh from bundle or net
+    public function getSubGeometry(url : String, autoLoad:Bool = true) : PlayerSubGeometryAsset {
+        var pma : PlayerSubGeometryAsset = cast(geometryBundle.getAsset(url), PlayerSubGeometryAsset);
 
         if(pma == null && autoLoad) {
-            var parser : PlayerSubMeshParser = new PlayerSubMeshParser(id);
-            var token : AssetLoaderToken = meshBundle.load(new URLRequest(prefixMeshURL(id)), null, parser);
+            var parser : PlayerSubGeometryParser = new PlayerSubGeometryParser(url);
+            var token : AssetLoaderToken = geometryBundle.load(new URLRequest(url), null, parser);
             pma = parser.asset;
             //TODO: add load & parse error handlers here!
         }
@@ -35,12 +36,8 @@ class PlayerLibrary {
         return pma;
     }
 
-    //TODO: For test only.
-    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/";
+    //get material from pool or net
 
-    private static function prefixMeshURL(id : String) : String {
-        return  PLAYER_MESH_URL + id + FileExtension.MESH;
-    }
 
     private static var _lib : PlayerLibrary;
 
