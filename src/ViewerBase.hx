@@ -60,9 +60,6 @@ class ViewerBase extends Sprite
 	//engine variables
 	private var _view:View3D;
 
-	//scene objects
-	private var _plane:Mesh;
-
 	/**
 	 * Constructor
 	 */
@@ -83,8 +80,8 @@ class ViewerBase extends Sprite
 		this.addChild(_view);
 
         //setup the camera
-		_view.camera.z = -600;
-		_view.camera.y = 200;
+		_view.camera.z = -300;
+		_view.camera.y = 300;
 		_view.camera.lookAt(new Vector3D());
 
         _view.setRenderCallback(_onEnterFrame);
@@ -99,11 +96,8 @@ class ViewerBase extends Sprite
 	/**
 	 * render loop
 	 */
-	private static var ctr:Float = 0;
 	private function _onEnterFrame(e:Event):Void
 	{
-		_plane.rotationY += 1;
-		_view.render();
 	}
 
 	/**

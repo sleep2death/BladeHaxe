@@ -5,7 +5,7 @@ import away3d.core.base.*;
 
 import openfl.Vector;
 
-class PlayerSubGeometryAsset extends NamedAssetBase implements IAsset {
+class SubGeometryAsset extends NamedAssetBase implements IAsset {
     public var assetType(get_assetType, never):String;
 
     public var isEmpty(get, never):Bool;

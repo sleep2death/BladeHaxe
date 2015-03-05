@@ -27,10 +27,10 @@ class PlayerSubGeometryParser extends ParserBase {
 
     private var _name : String;
 
-    public var asset(get, null) : PlayerSubGeometryAsset;
-    private var _asset : PlayerSubGeometryAsset;
+    public var asset(get, null) : SubGeometryAsset;
+    private var _asset : SubGeometryAsset;
 
-    public function get_asset() : PlayerSubGeometryAsset
+    public function get_asset() : SubGeometryAsset
     {
         return _asset;
     }
@@ -40,7 +40,7 @@ class PlayerSubGeometryParser extends ParserBase {
             _name = name;
         }
 
-        _asset = new PlayerSubGeometryAsset(_name);
+        _asset = new SubGeometryAsset(_name);
 
         super(ParserDataFormat.BINARY);
     }

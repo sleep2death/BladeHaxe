@@ -3,6 +3,7 @@ package;
 import openfl.display.Sprite;
 import openfl.net.URLRequest;
 import openfl.events.Event;
+import openfl.geom.Vector3D;
 
 import away3d.library.Asset3DLibrary;
 import away3d.library.Asset3DLibraryBundle;
@@ -12,39 +13,52 @@ import away3d.events.Asset3DEvent;
 import away3d.core.base.*;
 import away3d.entities.*;
 import away3d.materials.*;
+import away3d.primitives.*;
+import away3d.materials.methods.*;
 
 import hommer.library.*;
 import hommer.core.geometries.*;
 import hommer.entities.*;
+import hommer.materials.*;
 
 class CharacterView extends ViewerBase {
     public function new()
     {
         super();
         loadCharacterMesh();
+        //loadCharacterMaterial();
     }
 
-    private var player : PlayerGeometry;
+    private var geo : PlayerGeometry;
+    private var mat : PlayerBodyMaterial;
+
     public function loadCharacterMesh() : Void
     {
-        player = new PlayerGeometry();
-        player.getSubMeshGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "thigh_0"]);
+        geo = new PlayerGeometry();
+        geo.getSubGeometryGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "thigh_0"]);
 
-        var mesh : PlayerBase = new PlayerBase(player, new ColorMaterial(0xFF9900));
+        mat = new PlayerBodyMaterial();
+        mat.addMethod(new RimLightMethod(0xFFFFFF, 2, 2));
+
+        var mesh : PlayerBase = new PlayerBase(geo, mat);
         _view.scene.addChild(mesh);
-        //var libPlayer : PlayerLibrary = PlayerLibrary.getInstance();
-        //var pma : PlayerSubMeshAsset = libPlayer.getSubMesh("arm_0");
-        //libPlayer.getMesh("arm_0");
-        //libPlayer.getMesh("body_0");
-        //libPlayer.getMesh("belt_0");
-        //libPlayer.getMesh("boot_0");
-        //libPlayer.getMesh("hair_0");
-        //libPlayer.getMesh("hand_0");
-        //libPlayer.getMesh("head_0");
-        //libPlayer.getMesh("leg_0");
-        //libPlayer.getMesh("thigh_0");
-        //libBundle.addEventListener(Asset3DEvent.Asset_COMPLETE, onMeshComplete)
-        //libBundle.load(new URLRequest(PLAYER_MESH_URL), );
+    }
+
+    private var mesh : Mesh;
+    private function loadCharacterMaterial() : Void
+    {
+        var plane : PlaneGeometry = new PlaneGeometry(256, 256);
+        var m : PlayerBodyMaterial = new PlayerBodyMaterial();
+
+        mesh = new Mesh(plane, m);
+        _view.scene.addChild(mesh);
+
+        //m.getSubTextureGroup(["ATFTest"]);
+
+        _view.camera.y = 400;
+        _view.camera.z = 0;
+        _view.camera.lookAt(new Vector3D());
+
     }
 
     private var _count : UInt = 0;
@@ -52,7 +66,7 @@ class CharacterView extends ViewerBase {
     {
         _view.render();
         if(_count == 150) {
-            player.getSubMeshGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "skirt_1"]);
+            //player.getSubGeometryGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "skirt_1"]);
         }
         _count++;
     }

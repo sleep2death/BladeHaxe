@@ -7,7 +7,7 @@ import openfl.Vector;
 import openfl.events.Event;
 
 import hommer.library.PlayerLibrary;
-import hommer.library.assets.PlayerSubGeometryAsset;
+import hommer.library.assets.SubGeometryAsset;
 import hommer.events.PlayerEvent;
 import hommer.utils.FileExtension;
 
@@ -25,7 +25,7 @@ class PlayerGeometry extends Geometry {
     private var _numSubGeo : UInt;
     private var _indicesOffset : UInt;
 
-    private var preparingAssets : Vector<PlayerSubGeometryAsset> = new Vector<PlayerSubGeometryAsset>();
+    private var preparingAssets : Vector<SubGeometryAsset> = new Vector<SubGeometryAsset>();
 
     public var isPreparing(get, null) : Bool;
 
@@ -48,13 +48,13 @@ class PlayerGeometry extends Geometry {
         }
     }
 
-    public function getSubMeshGroup(subNames : Vector<String>) : Void {
+    public function getSubGeometryGroup(subNames : Vector<String>) : Void {
         init();
 
         _numSubGeo = subNames.length;
 
         for(name in subNames) {
-            var pma : PlayerSubGeometryAsset = PlayerLibrary.getInstance().getSubGeometry(prefixMeshURL(name));
+            var pma : SubGeometryAsset = PlayerLibrary.getInstance().getSubGeometry(prefixMeshURL(name));
             //if sub mesh need to be loaded:
             if(pma.isEmpty) {
                 pma.addEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubAssetLoaded);
@@ -69,7 +69,7 @@ class PlayerGeometry extends Geometry {
     private function onSubAssetLoaded(evt : LoaderEvent) : Void
     {
         evt.target.removeEventListener(LoaderEvent.RESOURCE_COMPLETE, onSubAssetLoaded);
-        var pma : PlayerSubGeometryAsset = cast(evt.target, PlayerSubGeometryAsset);
+        var pma : SubGeometryAsset = cast(evt.target, SubGeometryAsset);
         onSubAssetReady(pma);
     }
     //TODO: PARSE ERROR HANDLER NEEDED!
@@ -80,7 +80,7 @@ class PlayerGeometry extends Geometry {
     private var _unitedBoneWeights : Vector<Float>;
     private var _unitedBoneIndices : Vector<UInt>;
 
-    private function onSubAssetReady(pma : PlayerSubGeometryAsset) : Void
+    private function onSubAssetReady(pma : SubGeometryAsset) : Void
     {
         _unitedVertices = _unitedVertices.concat(pma.vertices);
         _unitedUvs = _unitedUvs.concat(pma.uvs);

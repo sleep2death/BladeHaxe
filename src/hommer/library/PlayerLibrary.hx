@@ -15,16 +15,16 @@ import hommer.library.assets.*;
 class PlayerLibrary {
 
     private var geometryBundle : Asset3DLibraryBundle;
-    private var animBundle : Asset3DLibraryBundle;
+    private var materialBundle : Asset3DLibraryBundle;
 
     private function new() {
         geometryBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_GEOMETRY);
-        animBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_ANIM);
+        materialBundle = Asset3DLibrary.getBundle(LibNames.PLAYER_MATERIAL);
     }
 
     //get submesh from bundle or net
-    public function getSubGeometry(url : String, autoLoad:Bool = true) : PlayerSubGeometryAsset {
-        var pma : PlayerSubGeometryAsset = cast(geometryBundle.getAsset(url), PlayerSubGeometryAsset);
+    public function getSubGeometry(url : String, autoLoad:Bool = true) : SubGeometryAsset {
+        var pma : SubGeometryAsset = cast(geometryBundle.getAsset(url), SubGeometryAsset);
 
         if(pma == null && autoLoad) {
             var parser : PlayerSubGeometryParser = new PlayerSubGeometryParser(url);
@@ -37,6 +37,20 @@ class PlayerLibrary {
     }
 
     //get material from pool or net
+    //TODO: When loaded from one united atf, it should be a new bundle class to handle that.
+    public function getAtlas(url : String, autoLoad:Bool = true) : AtlasAsset
+    {
+        var aa : AtlasAsset = cast(materialBundle.getAsset(url), AtlasAsset);
+
+        if(aa == null && autoLoad) {
+            var parser : AtlasParser= new AtlasParser(url);
+            var token : AssetLoaderToken = materialBundle.load(new URLRequest(url), null, parser);
+            aa = parser.asset;
+            //TODO: add load & parse error handlers here!
+        }
+
+        return aa;
+    }
 
 
     private static var _lib : PlayerLibrary;
