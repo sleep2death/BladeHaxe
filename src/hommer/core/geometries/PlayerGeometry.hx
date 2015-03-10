@@ -118,10 +118,12 @@ class PlayerGeometry extends Geometry {
             addSubGeometry(unitedGeometry);
             unitedGeometryAdded = true;
         }
+
+        trace("ASSEMBLE PLAYER BODY SUB GEOMETRIES");
     }
 
     //TODO: For test only.
-    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/";
+    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/female/";
 
     private static function prefixMeshURL(id : String) : String {
         return  PLAYER_MESH_URL + id + FileExtension.MESH;

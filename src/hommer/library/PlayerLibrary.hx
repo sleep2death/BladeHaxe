@@ -30,14 +30,22 @@ class PlayerLibrary {
             var parser : PlayerSubGeometryParser = new PlayerSubGeometryParser(url);
             var token : AssetLoaderToken = geometryBundle.load(new URLRequest(url), null, parser);
             pma = parser.asset;
+
+            //add the asset to bundle if not exsist, and the parser will not ADD the asset to bundle automatically
+            geometryBundle.addAsset(pma);
             //TODO: add load & parse error handlers here!
+            token.addEventListener(LoaderEvent.LOAD_ERROR, onLoadError);
         }
 
         return pma;
     }
 
+    private function onLoadError(evt: LoaderEvent) : Void
+    {
+        trace(evt.message);
+    }
+
     //get material from pool or net
-    //TODO: When loaded from one united atf, it should be a new bundle class to handle that.
     public function getAtlas(url : String, autoLoad:Bool = true) : AtlasAsset
     {
         var aa : AtlasAsset = cast(materialBundle.getAsset(url), AtlasAsset);
@@ -46,12 +54,15 @@ class PlayerLibrary {
             var parser : AtlasParser= new AtlasParser(url);
             var token : AssetLoaderToken = materialBundle.load(new URLRequest(url), null, parser);
             aa = parser.asset;
+
+            //add the asset to bundle if not exsist, and the parser will not ADD the asset to bundle automatically
+            materialBundle.addAsset(aa);
             //TODO: add load & parse error handlers here!
+            token.addEventListener(LoaderEvent.LOAD_ERROR, onLoadError);
         }
 
         return aa;
     }
-
 
     private static var _lib : PlayerLibrary;
 

@@ -38,7 +38,7 @@ class CharacterView extends ViewerBase {
         geo.getSubGeometryGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "thigh_0"]);
 
         mat = new PlayerBodyMaterial();
-        mat.addMethod(new RimLightMethod(0xFFFFFF, 2, 2));
+        //mat.addMethod(new RimLightMethod(0xFFFFFF, 2, 2));
 
         var mesh : PlayerBase = new PlayerBase(geo, mat);
         _view.scene.addChild(mesh);
@@ -47,7 +47,7 @@ class CharacterView extends ViewerBase {
     private var mesh : Mesh;
     private function loadCharacterMaterial() : Void
     {
-        var plane : PlaneGeometry = new PlaneGeometry(256, 256);
+        var plane : PlaneGeometry = new PlaneGeometry(256, 256, 4, 4);
         var m : PlayerBodyMaterial = new PlayerBodyMaterial();
 
         mesh = new Mesh(plane, m);

@@ -56,7 +56,8 @@ class PlayerSubGeometryParser extends ParserBase {
         //dispatch complete event so that the playerbase should know;
         _asset.dispatchEvent(new LoaderEvent(LoaderEvent.RESOURCE_COMPLETE));
 
-        super.finalizeAsset(_asset);
+        //don't finalize this asset, because it is already added to the bundle
+        //super.finalizeAsset(_asset);
     }
 
     private override function proceedParsing() : Bool {
