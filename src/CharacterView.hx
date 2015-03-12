@@ -4,6 +4,7 @@ import openfl.display.Sprite;
 import openfl.net.URLRequest;
 import openfl.events.Event;
 import openfl.geom.Vector3D;
+import openfl.Vector;
 
 import away3d.library.Asset3DLibrary;
 import away3d.library.Asset3DLibraryBundle;
@@ -38,6 +39,7 @@ class CharacterView extends ViewerBase {
         geo.getSubGeometryGroup(["arm_0", "body_0", "belt_0","boot_0", "hair_0", "hand_0", "head_0", "leg_0", "thigh_0"]);
 
         mat = new PlayerBodyMaterial();
+        mat.setSubTextures(PlayerLibrary.getInstance().getAtlas(PlayerBodyMaterial.prefixURL(PlayerBodyMaterial.ATLAS)), Vector.fromArray(["male_avatar", "head_t1_toufa", "face_t1_toufa"]));
         //mat.addMethod(new RimLightMethod(0xFFFFFF, 2, 2));
 
         var mesh : PlayerBase = new PlayerBase(geo, mat);

@@ -90,7 +90,7 @@ class ViewerBase extends Sprite
 		onResize();
 
         // stats
-		//this.addChild(new away3d.debug.AwayStats(_view));
+		this.addChild(new away3d.debug.AwayStats(_view));
     }
 
 	/**

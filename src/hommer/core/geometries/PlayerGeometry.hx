@@ -123,7 +123,7 @@ class PlayerGeometry extends Geometry {
     }
 
     //TODO: For test only.
-    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/female/";
+    private static inline var PLAYER_MESH_URL : String = "../../../assets/fashi/male/";
 
     private static function prefixMeshURL(id : String) : String {
         return  PLAYER_MESH_URL + id + FileExtension.MESH;
